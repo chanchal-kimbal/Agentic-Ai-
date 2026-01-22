@@ -35,7 +35,3 @@ def validate_db_credentials(host, port, database, user, password):
 
 
 
-# client_id = "BCITS_MDM"
-# projectid=7
-
-# print(is_validate(projectid,client_id))
