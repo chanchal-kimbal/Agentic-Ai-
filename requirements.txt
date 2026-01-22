@@ -8,3 +8,4 @@ langgraph
 requests
 openpyxl
 xlsxwriter
+psycopg2
