@@ -47,32 +47,3 @@ def get_commandType_only(data, allow_set_commandtype,projectid):
 
 
 
-# def get_commandType_only(data, allow_set_commandtype):
-#     # data = json.loads(data) if isinstance(data, str) else data
-
-#     if "filtered_data" not in data:
-#         print("Invalid JSON structure")
-#         return None
-
-#     for item in data["filtered_data"]:
-#         raw_body = item.get("_Test Data", "")
-#         parsed_json = parse_test_data(raw_body)
-
-#         get_commandType = parsed_json.get("commandType")
-
-#         set_df, _ = get_filter_data(1)
-#         set_values = set_df["set_commandtype"].values
-
-#         if not allow_set_commandtype:
-#             if get_commandType in set_values:
-#                 return None
-#             return parsed_json
-
-#         else:
-#             if get_commandType in set_values:
-#                 return parsed_json
-#             return None
-
-
-
-# print(get_commandType_only(data,allow_set_commandtype=False))
