@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/ehes_db_dev
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - FLASK_ENV=development
+      - STREAMLIT_SERVER_HEADLESS=true
+    volumes:
+      - .:/app
+      - app_cache:/app/.cache
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - ehes-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=ehes_db_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    networks:
+      - ehes-network
+
+volumes:
+  postgres_dev_data:
+  app_cache:
+
+networks:
+  ehes-network:
+    driver: bridge

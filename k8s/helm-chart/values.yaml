@@ -1,0 +1,88 @@
+replicaCount: 2
+
+image:
+  repository: YOUR_ECR_IMAGE
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8501
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: ehes-dashboard-tls
+      hosts:
+        - your-domain.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  - name: PYTHONUNBUFFERED
+    value: "1"
+  - name: PYTHONDONTWRITEBYTECODE
+    value: "1"
+
+secrets:
+  enabled: true
+  name: ehes-secrets
+  data:
+    database-url: eW91ci1kYXRhYmFzZS11cmw=  # Replace with actual base64 encoded value
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8501
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8501
+  initialDelaySeconds: 5
+  periodSeconds: 5
