@@ -54,10 +54,15 @@ def test_langchain_imports():
 def test_helper_functions():
     """Test helper function imports"""
     try:
-        from helper_function import *
+        import sys
+        import os
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from helper_function import parse_test_data, get_commandType_only
         assert True
     except ImportError as e:
         pytest.fail(f"Failed to import helper functions: {e}")
+    except Exception as e:
+        pytest.fail(f"Error importing helper functions: {e}")
 
 def test_main_entry():
     """Test that main.py can be executed without errors"""
