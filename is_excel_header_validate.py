@@ -38,11 +38,7 @@ def align_excel_headers(df):
 
 
 
-# file="demo_output_copy.xlsx"
-# file=pd.read_excel(file)
-# df = align_excel_headers(file)
 
-# print(df.columns.tolist())
 
 
 
